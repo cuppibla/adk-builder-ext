@@ -1,0 +1,8 @@
+{
+  "name": "adk-builder",
+  "version": "1.0.0",
+  "description": "Expert ADK agent builder skill for vibe-coding Google ADK agents through natural language.",
+  "skills": [
+    "./skills/adk-builder"
+  ]
+}
