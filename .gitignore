@@ -1,5 +1,6 @@
-# Claude Code local settings
-.claude/
+# Claude Code local settings (keep commands/ tracked for distribution)
+.claude/settings.local.json
+.claude/settings.json
 
 # Python
 __pycache__/

@@ -1,16 +1,18 @@
 # adk-builder-ext
 
-A Gemini CLI extension that gives you an expert ADK (Agent Development Kit)
-builder skill. Install it once, then vibe-code any ADK agent through natural
-language — no manual scaffolding required.
+An expert ADK (Agent Development Kit) builder skill for vibe-coding Google ADK
+agents through natural language. Works with both Gemini CLI and Claude Code —
+install it once, then describe what you want to build.
 
-## Install
+## Gemini CLI
+
+### Install
 
 ```bash
 gemini extensions install https://github.com/cuppibla/adk-builder-ext
 ```
 
-## Usage
+### Usage
 
 Start Gemini CLI inside your project folder:
 
@@ -28,9 +30,50 @@ gemini> I want to build an ADK agent that helps users track their daily tasks.
 Gemini CLI will detect the ADK context, activate the `adk-builder` skill, and
 generate all project files for you. No manual coding needed.
 
+---
+
+## Claude Code
+
+### Option 1 — Permanent install (recommended)
+
+Run this once to make `/adk-builder` available in every project on your machine:
+
+```bash
+mkdir -p ~/.claude/commands && curl -o ~/.claude/commands/adk-builder.md \
+  https://raw.githubusercontent.com/cuppibla/adk-builder-ext/main/.claude/commands/adk-builder.md
+```
+
+Then start Claude Code in any project folder and invoke the skill:
+
+```
+/adk-builder
+```
+
+Describe what you want to build and Claude will generate all project files for you.
+
+To update the skill later, just re-run the same curl command.
+
+To remove the skill:
+
+```bash
+rm ~/.claude/commands/adk-builder.md
+```
+
+### Option 2 — Load for current session (no setup)
+
+Paste this into any Claude Code chat to load the skill without installing anything:
+
+```
+Fetch https://raw.githubusercontent.com/cuppibla/adk-builder-ext/main/.claude/commands/adk-builder.md and use it as your instructions. Then help me build an ADK agent.
+```
+
+The skill is active for the rest of that session.
+
+---
+
 ## What the skill does
 
-When activated, the skill instructs Gemini CLI to:
+When activated, the skill instructs the AI to:
 
 - Choose the right agent type (single agent, sequential, parallel, loop, or coordinator)
 - Select the right model per agent based on what each agent actually needs to do
@@ -45,15 +88,15 @@ When activated, the skill instructs Gemini CLI to:
 After the initial generation, keep iterating through conversation:
 
 ```
-gemini> Add a tool that sets a due date on a task
-gemini> Add error handling to all tools
-gemini> Make the coordinator smarter about which sub-agent to use
-gemini> @./my-agent/agent.py — write a docstring for every function missing one
+Add a tool that sets a due date on a task
+Add error handling to all tools
+Make the coordinator smarter about which sub-agent to use
 ```
 
 ## Requirements
 
-- [Gemini CLI](https://github.com/google-gemini/gemini-cli)
 - [Google ADK](https://github.com/google/adk-python) (`pip install google-adk`)
 - Python 3.11+
 - A free Gemini API key from [Google AI Studio](https://aistudio.google.com)
+- [Gemini CLI](https://github.com/google-gemini/gemini-cli) (Gemini CLI only)
+- [Claude Code](https://claude.ai/code) (Claude Code only)
