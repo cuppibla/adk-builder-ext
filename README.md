@@ -9,7 +9,13 @@ install it once, then describe what you want to build.
 ### Install
 
 ```bash
-gemini extensions install https://github.com/cuppibla/adk-builder-ext
+gemini extensions install https://github.com/cuppibla/adk-builder-ext --auto-update
+```
+
+To update manually (if installed without `--auto-update`):
+
+```bash
+gemini extensions update adk-builder-ext
 ```
 
 ### Usage
@@ -23,8 +29,8 @@ gemini
 Then just describe what you want to build:
 
 ```
-gemini> I want to build an ADK agent that helps users track their daily tasks.
-        It should be able to add tasks, list them, and mark them as done.
+I want to build an ADK agent that helps users track their daily tasks.
+It should be able to add tasks, list them, and mark them as done.
 ```
 
 Gemini CLI will detect the ADK context, activate the `adk-builder` skill, and
@@ -51,7 +57,9 @@ Then start Claude Code in any project folder and invoke the skill:
 
 Describe what you want to build and Claude will generate all project files for you.
 
-To update the skill later, just re-run the same curl command.
+### Update
+
+To pick up the latest version, re-run the same curl command above.
 
 To remove the skill:
 

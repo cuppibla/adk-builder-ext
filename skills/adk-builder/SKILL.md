@@ -39,7 +39,7 @@ When the user asks to change, add, or fix something:
 <project-name>/
 ├── .env              ← API key (never commit this)
 ├── __init__.py       ← one line: from . import agent
-└── agent.py          ← all tools + agents
+└── agent.py          ← load_dotenv() + all tools + agents
 ```
 
 Never create extra files, subfolders, or separate tool modules unless the
@@ -127,6 +127,20 @@ def my_tool(param: str) -> dict:
     except Exception as e:
         return {"status": "error", "message": str(e)}
 ```
+
+---
+
+## Rules for agent.py — Required Header
+
+Every `agent.py` MUST start with these two lines before any other imports:
+
+```python
+from dotenv import load_dotenv
+load_dotenv()
+```
+
+Without `load_dotenv()`, the `GOOGLE_API_KEY` in `.env` is not set when the module
+is imported by `adk web`, and the agent will silently fail to appear in the UI.
 
 ---
 
@@ -448,16 +462,31 @@ Always exactly one line. Remind the user to replace the placeholder:
 GOOGLE_API_KEY="your-api-key-here"
 ```
 
+Also remind the user to install python-dotenv if not already present:
+`pip install python-dotenv`
+
 ---
 
 ## Testing Instructions
 
 After generating files, always tell the user:
 
-> Run `adk web` from the **parent directory** of `<project-name>/`.
-> Open http://localhost:8000, select your agent, and start chatting.
+> Make sure you're in the **parent directory** of `<project-name>/`, then run:
+>
+> ```bash
+> # If your project is at ~/projects/my_agent/, run from ~/projects/
+> adk web
+> ```
+>
+> Open http://localhost:8000 — your agent appears in the **top-left dropdown**.
+> Select it and start chatting.
 >
 > Don't have an API key yet? Get one free at https://aistudio.google.com
+
+**Common reason agent doesn't appear in dropdown:**
+- Running `adk web` from *inside* the project folder instead of its parent
+- `load_dotenv()` missing from `agent.py` — ADK can't load the API key
+- Syntax error in `agent.py` — check the terminal for import errors
 
 ---
 
@@ -467,7 +496,9 @@ If the user pastes an error, diagnose it and fix it directly:
 
 | Error | Likely Cause | Fix |
 |-------|-------------|-----|
+| Agent missing from `adk web` dropdown | `load_dotenv()` missing, wrong run directory, or syntax error | Add `load_dotenv()` to top of `agent.py`; run `adk web` from parent dir; check terminal for import errors |
 | `ModuleNotFoundError: google.adk` | ADK not installed | Tell user: `pip install google-adk` |
+| `ModuleNotFoundError: dotenv` | python-dotenv not installed | Tell user: `pip install python-dotenv` |
 | `root_agent not found` | Wrong variable name | Rename agent variable to `root_agent` |
 | `GOOGLE_API_KEY not set` | Missing .env or wrong path | Check .env exists in project root |
 | `Tool not being called` | Weak docstring or instruction | Improve tool docstring and instruction |
