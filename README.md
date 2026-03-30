@@ -18,6 +18,12 @@ To update manually (if installed without `--auto-update`):
 gemini extensions update adk-builder-ext
 ```
 
+To uninstall:
+
+```bash
+gemini extensions uninstall adk-builder-ext
+```
+
 ### Usage
 
 Start Gemini CLI inside your project folder:
