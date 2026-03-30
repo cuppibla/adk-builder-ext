@@ -4,7 +4,8 @@
 # 1. Replace each tool stub with your actual logic
 # 2. Update root_agent's name, instruction, and tools list
 # 3. Add your API key to .env: GOOGLE_API_KEY="your-key-here"
-# 4. Run from parent folder: adk web
+# 4. From the outer <project-name>/ folder, run: adk web
+#    (this file lives at <project-name>/<project-name>/agent.py)
 #
 # MODEL SELECTION GUIDE:
 #   gemini-2.5-flash — tool-calling, routing, data retrieval, most agents

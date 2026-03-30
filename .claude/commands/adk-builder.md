@@ -12,9 +12,9 @@ When the user describes an agent they want to build:
 
 1. Ask for a project name if they haven't given one (short, snake_case)
 2. Decide the right agent architecture (see "Choosing the Right Architecture" below)
-3. Generate ALL project files in one response (`agent.py`, `__init__.py`, `.env`)
+3. Generate ALL project files in one response (`<project-name>/agent.py`, `<project-name>/__init__.py`, `<project-name>/.env`) — always show the full path including the inner subfolder
 4. Briefly explain what each agent/tool does in one sentence
-5. Tell the user how to test it: run `adk web` from the parent directory
+5. Tell the user how to test it: `cd <project-name>` then run `adk web`
 
 When the user asks to change, add, or fix something:
 1. Make the change directly — never ask them to edit manually
@@ -26,14 +26,18 @@ When the user asks to change, add, or fix something:
 ## Project Structure (always use exactly this layout)
 
 ```
-<project-name>/
-├── .env              ← API key (never commit this)
-├── __init__.py       ← one line: from . import agent
-└── agent.py          ← load_dotenv() + all tools + agents
+<project-name>/               ← project root; run `adk web` from here
+└── <project-name>/           ← Python package; ADK discovers this
+    ├── .env                  ← API key (never commit this)
+    ├── __init__.py           ← one line: from . import agent
+    └── agent.py              ← load_dotenv() + all tools + agents
 ```
 
-Never create extra files, subfolders, or separate tool modules unless the
-user specifically asks for it.
+The outer folder is the project root where you run `adk web`. The inner
+folder (same name, snake_case) is the Python package that ADK discovers.
+
+Never create extra files, subfolders, or separate tool modules inside the
+inner package unless the user specifically asks for it.
 
 ---
 
@@ -461,10 +465,8 @@ Also remind the user to install python-dotenv if not already present:
 
 After generating files, always tell the user:
 
-> Make sure you're in the **parent directory** of `<project-name>/`, then run:
->
 > ```bash
-> # If your project is at ~/projects/my_agent/, run from ~/projects/
+> cd <project-name>
 > adk web
 > ```
 >
@@ -474,7 +476,7 @@ After generating files, always tell the user:
 > Don't have an API key yet? Get one free at https://aistudio.google.com
 
 **Common reason agent doesn't appear in dropdown:**
-- Running `adk web` from *inside* the project folder instead of its parent
+- Running `adk web` from inside the inner `<project-name>/<project-name>/` package folder — run from the outer `<project-name>/` instead
 - `load_dotenv()` missing from `agent.py` — ADK can't load the API key
 - Syntax error in `agent.py` — check the terminal for import errors
 
@@ -486,7 +488,7 @@ If the user pastes an error, diagnose it and fix it directly:
 
 | Error | Likely Cause | Fix |
 |-------|-------------|-----|
-| Agent missing from `adk web` dropdown | `load_dotenv()` missing, wrong run directory, or syntax error | Add `load_dotenv()` to top of `agent.py`; run `adk web` from parent dir; check terminal for import errors |
+| Agent missing from `adk web` dropdown | `load_dotenv()` missing, wrong run directory, or syntax error | Add `load_dotenv()` to top of `agent.py`; run `adk web` from the outer `<project-name>/` folder (not from inside the inner package); check terminal for import errors |
 | `ModuleNotFoundError: google.adk` | ADK not installed | Tell user: `pip install google-adk` |
 | `ModuleNotFoundError: dotenv` | python-dotenv not installed | Tell user: `pip install python-dotenv` |
 | `root_agent not found` | Wrong variable name | Rename agent variable to `root_agent` |
