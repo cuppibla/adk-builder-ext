@@ -21,7 +21,7 @@ gemini extensions update adk-builder-ext
 To uninstall:
 
 ```bash
-gemini extensions uninstall adk-builder-ext
+gemini extensions uninstall https://github.com/cuppibla/adk-builder-ext
 ```
 
 ### Usage
