@@ -15,7 +15,7 @@ gemini extensions install https://github.com/cuppibla/adk-builder-ext --auto-upd
 To update manually (if installed without `--auto-update`):
 
 ```bash
-gemini extensions update adk-builder-ext
+gemini extensions update https://github.com/cuppibla/adk-builder-ext
 ```
 
 To uninstall:
